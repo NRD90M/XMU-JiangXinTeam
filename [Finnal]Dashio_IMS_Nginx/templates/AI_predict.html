@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+<!-- Content Wrapper. Contains page content -->
+<style>
+.hide{
+    display: none;
+}
+</style>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <ol class="breadcrumb" onclick="window.location.href='/chart_menu'">
+            <img  src="../static/img/backk.png" style="width:20px; height:20px; " >
+            <span style="text-align: center; font-size: 16px;line-height: 1.3333333;float: right; margin-right:calc(50% - 24px)">AI癌症预测</span>
+        </ol>
+    </section> 
+
+    <!-- Main content -->
+    <div  id="msg" class="hide" style="background-color: #ffffff;  width:94%;margin-left:3%;border: 3px solid #3c8dbc;
+    height: 250px; border-radius: 30px; margin-top:250px;position: absolute; z-index: 100">
+
+        <button  type="button"  class="btn btn-primary btn-lg"  onclick="msg()"
+        style="background-color: #e69d00;width: 140px; height: 40px;margin-left:calc(50% - 70px); margin-top: 205px;position: absolute;">确认</button>
+        <h4 id="testName" style="text-align: center;font-size: 24px;"></h4>
+        <h4 id="testResult" style="text-align: center;font-size: 21px;color: #3c8dbc;margin-top: 30px;"></h4>
+        <h4 id="testMsg" style="text-align: center;font-size: 21px;color: #3c8dbc;"></h4>
+   </div>
+    <section class="content" style="height: 1100px ; width: auto;">
+        <div id="mask"  class="hide" style="position: absolute; width:calc(100% - 30px);height: 100%; background-color: rgba(99, 98, 98, 0.3);"  ></div>                      <!--mask-->
+        <style>
+            #Tag
+            {
+               
+                font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+                width:48%;
+                border-collapse:collapse;
+                text-align: center
+            }
+            #Tag td, #Tag th 
+            {
+                font-size:1em;
+                border:1px solid #a9abaf;
+                padding:3px 7px 2px 7px;
+            }
+            #Tag th 
+            {
+                font-size:1.1em;
+                text-align:left;
+                padding-top:5px;
+                padding-bottom:4px;
+                background-color:#3c8dbc;
+                color:#ffffff;
+            }
+            #Tag tr.alt td 
+            {
+                color:#000000;
+                background-color:#EAF2D3;
+            }
+
+            input[type=text], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+          }
+
+          input[type=submit] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+
+          input[type=submit]:hover {
+            background-color: #45a049;
+          }
+         </style>
+            </head>   
+            <body>   
+            
+              <table id="Tag" style="float: left">
+              <tr>
+                  <th colspan="2" style="text-align: center">样本一</th>   
+              </tr>
+              <tr>
+                <th style="text-align: center">指标</th>
+                <th style="text-align: center">值</th>	
+              </tr>
+              <tr>
+                <td>Sex</td>
+                <td >men</td>
+              </tr>
+              <tr>
+                <td>Age</td>
+                <td>50</td>
+              </tr>
+              <tr>
+                <td>CA153</td>
+                <td>NaN</td>
+              </tr>
+              <tr>
+                <td>CA199</td>
+                <td>2.469793</td>
+              </tr>
+              <tr>
+                <td>CYFRA211</td>
+                <td>NaN</td>
+              </tr>
+              <tr>
+                <td>CA724</td>
+                <td>NaN</td>
+              </tr>
+              <tr>
+                <td>CA125</td>
+                <td>2.230014</td>
+              </tr>
+              <tr>
+                <td>NSE</td>
+                <td>NaN</td>
+              </tr>
+              <tr>
+                <td>PSA</td>
+                <td>NaN</td>
+              </tr>
+              <tr>
+                <td>SCCA</td>
+                <td>NaN</td>
+              </tr>
+              <tr>
+                <td>HE4</td>
+                <td>3.492865</td>
+              </tr>
+              <tr>
+                <td>AFP</td>
+                <td>NaN</td>
+              </tr>
+              <tr>
+                <td>CA211</td>
+                <td>NaN</td>
+              </tr>
+              </table>
+              <table id="Tag"  style="float: right">
+                  <tr>
+                      <th colspan="2" style="text-align: center">样本二</th>   
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">指标</th>
+                    <th style="text-align: center">值</th>	
+                  </tr>
+                  <tr>
+                    <td>Sex</td>
+                    <td>Men</td>
+                  </tr>
+                  <tr>
+                    <td>Age</td>
+                    <td>64</td>
+                  </tr>
+                  <tr>
+                    <td>CA153</td>
+                    <td>NaN</td>
+                  </tr>
+                  <tr>
+                    <td>CA199</td>
+                    <td>2.805782</td>
+                  </tr>
+                  <tr>
+                    <td>CYFRA211</td>
+                    <td>1.423108</td>
+                  </tr>
+                  <tr>
+                    <td>CA724</td>
+                    <td>1.329724</td>
+                  </tr>
+                  <tr>
+                    <td>CA125</td>
+                    <td>2.714695</td>
+                  </tr>
+                  <tr>
+                    <td>NSE</td>
+                    <td>0.897719</td>
+                  </tr>
+                  <tr>
+                    <td>PSA</td>
+                    <td>NaN</td>
+                  </tr>
+                  <tr>
+                    <td>SCCA</td>
+                    <td>0.403463</td>
+                  </tr>
+                  <tr>
+                    <td>HE4</td>
+                    <td>NaN</td>
+                  </tr>
+                  <tr>
+                    <td>AFP</td>
+                    <td>NaN</td>
+                  </tr>
+                  <tr>
+                    <td>CA211</td>
+                    <td>NaN</td>
+                  </tr>
+                  </table>
+                  <button  type="button"  class="btn btn-primary btn-lg"  onclick="predict1()"
+                  style="background-color: #e69d00;width: 48%; height: 40px; float: left">预测</button>
+                  <button type="button" class="btn btn-primary btn-lg"   onclick="predict2()"
+                  style="background-color: #e69d00;width: 48%; height: 40px; float: right">预测</button>    
+
+                
+                <div style="margin-top:450px;border: 1px solid #888a8b; ">
+                    <h4 style="text-align:center;margin: 0px;background-color: #3c8dbc;color: white;border-top:5px solid #3c8dbc;border-bottom:5px solid #3c8dbc;">您的指标</h4>
+                  <form >
+                   <span style="width: 25%;margin-top: 50px" >Sex:</span>
+                   <div style="width: 90%;float: right; position: relative">
+                    <select id="Sex" name="Sex"  style="height: 50px;margin-right:5px;font-size: 10px">
+                      <option value="1" style="font: 100">男</option>
+                      <option value="0" style="width: 50px">女</option>
+                    </select>   
+                  </div>
+
+                    <span>Age:</span>&#8194&#8194
+                    <input type="text" id="Age" name="Age" style="width:105px;height: 20px" value="68" placeholder="50">
+                    <span>CA153:</span>&#8194&#8194&#8194
+                    <input type="text" id="CA153"  style="width:105px;height: 20px;float: right;margin-right:5px;" value="NaN"  placeholder="NaN">    
+
+                    <span>CA199:</span>
+                    <input type="text" id="CA199" name="CA199:" style="width:105px;height: 20px" value="3.359681" placeholder="3.359681">
+                    <span>CYRFA211:</span>
+                    <input type="text" id="CYRFA211" name="CYRFA211" style="width:105px;height: 20px;float: right;margin-right:5px;" value="NaN" placeholder="NaN">
+
+                    <span>CA724:</span>
+                    <input type="text" id="CA724" name="CA724" style="width:105px;height: 20px;" value="0.916291" placeholder="0.916291">
+                    <span >CA125:</span>&#8194&#8194&#8194
+                    <input type="text" id="CA125" name="CA125" style="width:105px;height: 20px;float: right;margin-right:5px;" value="2.028148" placeholder="2.028148">   
+
+                    <span>NSE:</span>&#8194&#8194
+                    <input type="text" id="NSE" name="NSE" style="width:105px;height: 20px" value="NaN" placeholder="NaN">    
+                    <span>PSA:</span>&#8194&#8194&#8194&#8194&#8194
+                    <input type="text" id="PSA" name="PSA" style="width:105px;height: 20px;float: right;margin-right:5px;" value="NaN" placeholder="NaN">    
+
+                    <span>SCCA:</span>&#8194
+                    <input type="text" id="SCCA" name="SCCA" style="width:105px;height: 20px" value="NaN" placeholder="NaN"> 
+                    <span>HE4:</span>&#8194&#8194&#8194&#8194&#8194
+                    <input type="text" id="HE4" name="HE4" style="width:105px;height: 20px;float: right;margin-right:5px;" value="NaN" placeholder="NaN">    
+
+                    <span>AFP:</span>&#8194&#8194
+                    <input type="text" id="AFP" name="AFP" style="width:105px;height: 20px" value="NaN" placeholder="NaN"> 
+                    <span>CA211:</span>&#8194&#8194&#8194
+                    <input type="text" id="CA211" name="CA211" style="width:105px;height: 20px;float: right;margin-right:5px;" value="NaN" placeholder="NaN">    
+                    <button  type="button"  class="btn btn-primary btn-lg"  onclick="predict3()"
+                    style="background-color: #e69d00;width:100%; height: 40px;">提交预测</button>
+                  </form>
+              </div>
+            
+                <script type="text/javascript">
+                    function predict1()
+                        {
+                            $("#mask").removeClass("hide");
+                            $.ajax({
+                              url: "/AI1?name=1",
+                              async: false,
+                              cache: false,
+                              success: function (data) {
+                                  xName = data[0];
+                                  console.log(xName)
+
+                              },
+                            });
+                            $("#testName").html("样本一");
+                            $("#testResult").html("预测结果:"+String(xName));
+                            if (xName<0.34){
+                              $("#testMsg").html("结果显示您有患癌风险(正常值≥0.34)");
+                            }
+                            else{
+                              $("#testMsg").html("您一切正常！(正常值≥0.34)");
+                            }
+                            $("#msg").removeClass("hide");
+                        }
+                        function predict2()
+                        {
+                            $("#mask").removeClass("hide");
+                            $.ajax({
+                              url: "/AI1?name=2",
+                              async: false,
+                              cache: false,
+                              success: function (data) {
+                                  xName = data[0];
+                                  console.log(xName)
+
+                              },
+                            });
+                            $("#testName").html("样本二");
+                            $("#testResult").html("预测结果:"+String(xName));
+                            if (xName<0.34){
+                              $("#testMsg").html("结果显示您有患癌症的风险(正常值≥0.34)");
+                            }
+                            else{
+                              $("#testMsg").html("您一切正常！(正常值≥0.34)");
+                            }
+                            $("#msg").removeClass("hide");                 
+                        }
+
+                        function predict3(){
+                            $("#mask").removeClass("hide");
+                            var Sex = document.getElementById("Sex").value
+                            var Age = document.getElementById("Age").value
+                            var CA153 = document.getElementById("CA153").value
+                            var CA199 = document.getElementById("CA199").value
+                            var CYRFA211 = document.getElementById("CYRFA211").value
+                            var CA724 = document.getElementById("CA724").value
+                            var CA125 = document.getElementById("CA125").value
+                            var PSA = document.getElementById("PSA").value
+                            var SCCA = document.getElementById("SCCA").value
+                            var HE4 = document.getElementById("HE4").value
+                            var AFP = document.getElementById("AFP").value
+                            var CA211 = document.getElementById("CA211").value
+                            $.ajax({
+                            url: "/AI1?name=3&Sex="+Sex+"&Age="+Age+"&CA153="+CA153+"&CA199="+CA199+"&CYRFA211="+CYRFA211+"&CA724="+CA724+"&CA125="+CA125+"&PSA="+PSA+"&SCCA="+SCCA+"&HE4="+HE4+"&AFP="+AFP+"&CA211="+CA211,
+                            async: false,
+                            cache: false,
+                            success: function (data) {
+                                xName = data[0];
+                                console.log(xName)
+
+                            },
+                          });
+                          $("#testName").html("您的数据");
+                          $("#testResult").html("预测结果:"+String(xName));
+                          if (xName<0.34){
+                            $("#testMsg").html("结果显示您有患癌症的风险(正常值≥0.34)");
+                          }
+                          else{
+                            $("#testMsg").html("您一切正常！(正常值≥0.34)");
+                          }
+                          $("#msg").removeClass("hide");
+                          
+                        }
+
+                        function msg()
+                        {
+                            $("#mask").addClass("hide");
+                            $("#msg").addClass("hide");
+                            $("#testName").html(" ");
+                            $("#testResult").html(" ");  
+                            $("#testMsg").html(" ");                          
+                        }
+
+                  </script>
+
+        <!--
+    <div>
+      <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+  </div>
+  -->
+    </section>
+    <!--
+  <div>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_1')">Turn on</button>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+</div>
+-->
+</div>
+
+
+
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<script src="../static/js/app.min.js"></script>
+<script src="../static/js/demo.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/fastclick.js"></script>
+
+
+</body>
+
+</html>

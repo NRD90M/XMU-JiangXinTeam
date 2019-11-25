@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Camera scan</title>
+  <link rel="stylesheet" href="../static/css/camera.css" />
+  <script src="../static/js/jquery.min.js"></script>
+  <script src="../static/js/reqrcode.js"></script>  
+</head>
+<body class="main">
+ <div >
+    <div class="scanGif"  id="scan">
+        <div class="controls  " id="head">
+            <button id="button" >选择</button>
+            <select id="select">
+              <option id="option"></option>
+            </select>
+            <script>
+              function code(result){
+                var val= "回调数据弹出："+result;
+                BSL.Vibrator();
+                BSL.msgRing();
+                //alert(val);
+              }
+            </script>
+            <a href="#" onclick="BSL.Qcode('0','code')">扫码</a>
+          </div>
+
+
+      <video id="video"  autoplay playsinline></video>
+      <div class="qr-box" id="qrBox"> 
+        <span id="qrBoxSpan"></span>
+      </div>
+      <h3>将二维码放入框内，即可自动扫描</h3>
+    </div>
+    <div class="mask1">
+      <h3>扫一扫识别您的健康检测仪</h3>
+      <h4 id="result"></h4> 
+    </div>
+    <div class="mask2"></div>
+    <div class="mask3"></div>
+    <div class="mask4"></div>
+    <canvas class="hide" id="canvas"></canvas>
+</div>
+</body>
+<script src="../static/js/camera.js"></script>
+</html>

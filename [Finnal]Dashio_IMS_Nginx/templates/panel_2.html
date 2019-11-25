@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Welcome
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="./board"><i class="fa fa-dashboard"></i> 主页</a></li>
+      <li><a href="#">检测</a></li>
+      <li class="active">控制面板</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+  <div style="text-align: center">
+      <h3 id="head_str" style="text-align:center"></h3>
+      <h3 id="head_str2" style="text-align:center"></h3>
+
+  </div>
+    <div class=image>
+      <div style="text-align: center">
+        <img id=image1 src="../static/img/put_small.gif" style="width:300px;height: 300px;margin-top: 60px">
+      </div>
+    </div>
+    <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 40px">
+      <button id=button1 class="btn btn-primary btn-lg " style="border-color: #3c8dbc;border-radius:12px;width: 200.8px; height: 64px;">下一步</button>
+    </div>
+  </section>
+</div>
+</div>
+<!--
+        <button type="button" class="btn btn-primary" onclick="btn_click('1')">Turn on</button>
+      <button type="button" class="btn btn-primary" onclick="btn_click('0')">Turn off</button>
+-->
+
+
+
+<script src="../static/js/app_camera.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../static/js/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../static/js/demo.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../static/js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../static/js/jquery.flot.resize.min.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../static/js/jquery.flot.pie.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../static/js/jquery.flot.categories.min.js"></script>
+<!-- Page script -->
+
+
+<script>
+  $(document).ready(function () {
+    var step= 0;
+    //var Dev_ID= "已连接，设备号:"+sessionStorage.getItem('Dev_ID')
+    var Dev_ID= "已连接，设备号:"+document.cookie
+
+    var str2="将检测芯片放入托盘内";
+    $("#head_str").html(Dev_ID);
+    $("#head_str2").html(str2);
+    $("#myButtons1").click(function () {
+      step++;
+      if (step<4)
+      {
+        
+        var str3="取出芯片，加入血样，将采集了血样的检测芯片放入托盘"
+        headArr =new Array("","耐心等待芯片标定",str3,"检测完成，取出芯片")
+        $("#head_str2").html(headArr[step]);
+        PicArr = new Array("","../static/img/flowchart_crop_small_small.gif","../static/img/offcenter_plt_small_small.gif","../static/img/get_plt_small.gif"); 
+        $("#image1").attr("src",PicArr[step]);
+        InnArr=new Array("","下一步","下一步","查看检测报告")
+        document.getElementById("button1").innerHTML=InnArr[step];
+      }
+      else
+      {
+        $("#image1").attr("src",'../static/img/photo1.jpg');
+        document.getElementById("button1").innerHTML="返回主界面";
+        self.location.href='/panel'
+      }
+    });
+  });
+</script>
+
+<script>
+  function btn_click(state) {
+    $.get("/panel_input/" + state, function (res) {console.log(res);});
+  }
+</script>
+
+<script>
+  $(function () {
+    $(".btn").click(function () {
+      $(this).button('complete').delay(1000).queue(btn_click(1));
+      $(this).css('width', '200.8px');
+      $(this).css('height', '64px');
+    });
+  }); 
+</script>
+</body>
+</html>

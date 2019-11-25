@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Welcome
+      <small></small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="./board"><i class="fa fa-dashboard"></i> 主页</a></li>
+      <li><a href="#">检测</a></li>
+      <li class="active">控制面板</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <!--
+      <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 40px">
+          <button type="button" class="btn btn-default btn-lg " data-loading-text="Loading..." onclick="btn_click('1')" style="border-color: #3c8dbc;border-radius:12px"><font size='6' color="#3c8dbc">基&nbsp;&nbsp;准&nbsp;&nbsp;检&nbsp;&nbsp;测</font></button>
+      </div>
+
+      <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 50px">
+          <button type="button" class="btn btn-default btn-lg" data-loading-text="Loading..." style="border-color: #3c8dbc;border-radius:12px"><font size='6' color="#3c8dbc">样&nbsp;&nbsp;品&nbsp;&nbsp;进&nbsp;&nbsp;样</font></button>
+      </div>
+      <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 50px">
+          <button type="button" class="btn btn-default btn-lg" data-loading-text="Loading..." style="border-color: #3c8dbc;border-radius:12px"><font size='6' color="#3c8dbc">得&nbsp;&nbsp;到&nbsp;&nbsp;结&nbsp;&nbsp;果</font></button>
+      </div>
+    -->
+    <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 40px">
+        <button type="button" class="btn btn-primary btn-lg "  data-complete-text="基准检测已完成"  style="border-color: #3c8dbc;border-radius:12px"><font size='6' color="white">基&nbsp;&nbsp;准&nbsp;&nbsp;检&nbsp;&nbsp;测</font></button>
+    </div>
+
+    <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 50px">
+        <button type="button" class="btn btn-primary btn-lg"  data-complete-text="进样完成" style="border-color: #3c8dbc;border-radius:12px"><font size='6' color="white">样&nbsp;&nbsp;品&nbsp;&nbsp;进&nbsp;&nbsp;样</font></button>
+    </div>
+    <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 50px">
+        <button type="button" class="btn btn-primary btn-lg" data-complete-text="正在进行计算分析" style="border-color: #3c8dbc;border-radius:12px"><font size='6' color="white">得&nbsp;&nbsp;到&nbsp;&nbsp;结&nbsp;&nbsp;果</font></button>
+    </div>
+
+  </section>
+</div>
+</div>
+<!--
+        <button type="button" class="btn btn-primary" onclick="btn_click('1')">Turn on</button>
+      <button type="button" class="btn btn-primary" onclick="btn_click('0')">Turn off</button>
+
+
+-->
+
+
+
+
+
+<!-- jQuery 2.2.3 -->
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../static/js/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../static/js/demo.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../static/js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../static/js/jquery.flot.resize.min.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../static/js/jquery.flot.pie.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../static/js/jquery.flot.categories.min.js"></script>
+<!-- Page script -->
+
+<script>
+  function btn_click(state) {
+    $.get("/panel_input/" + state, function (res) {
+      console.log(res);
+    });
+  }
+</script>
+
+<script>
+$(function() { 
+  $(".btn").click(function(){
+    $(this).button('complete').delay(1000).queue(btn_click(1));
+    $(this).css('width','200.8px');
+    $(this).css('height','64px');
+
+  });
+}); 
+</script>
+
+</body>
+</html>

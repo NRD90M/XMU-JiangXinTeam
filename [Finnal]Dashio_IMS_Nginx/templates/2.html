@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="content-header">
+      <ol class="breadcrumb" onclick="window.location.href='/chart_menu'">
+          <img  src="../static/img/backk.png" style="width:20px; height:20px;z-index: -1;; " >
+          <span style="text-align: center; font-size: 16px;line-height: 1.3333333;float: right; margin-right:calc(50% - 24px)">浓度图</span>
+      </ol>
+    </section> 
+  <!-- Main content -->
+  <section class="content" style="height: 700px;">
+
+    <div id="container" style="height: 70%"></div>
+
+    <div id="myButtons1" class="bs-example" style="text-align:center;">
+      <p id="hint">温馨提示(相对于清水)：</p> 
+      <p id="hint1"></p>
+      <p id="hint2"></p>
+      <p id="hint0"></p>
+    </div>
+
+
+    
+
+  </section>
+  <!--
+  <div>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_1')">Turn on</button>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+</div>
+-->
+</div>
+
+
+
+
+
+<script src="../static/js/app_camera.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../static/js/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../static/js/demo.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../static/js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../static/js/jquery.flot.resize.min.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../static/js/jquery.flot.pie.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../static/js/jquery.flot.categories.min.js"></script>
+
+<!-- Bootstrap 3.3.6 -->
+<!-- ChartJS 1.0.1 -->
+<script src="../static/js/Chart.min.js"></script>
+<!-- FastClick -->
+
+
+
+<script>
+  function btn_click_Motor(state) {
+    $.get("/panel_input_motor/" + state, function (res) { console.log(res); });
+  }
+</script>
+
+
+
+
+
+
+<script>
+  $(function () {
+    $(".btn").click(function () {
+      $(this).button('complete').delay(1000).queue(btn_click(1));
+      $(this).css('width', '200.8px');
+      $(this).css('height', '64px');
+    });
+  }); 
+</script>
+
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript"
+  src="https://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<script type="text/javascript">
+  $.ajax({
+    url: "/realtime_data_2",
+    async: false,
+    cache: false,
+    success: function (data) {
+      xName = data[0];
+      star1 = data[1];
+      star2 = data[2];
+      star3 = data[3];
+      star4 = data[4];
+      star5 = data[5];
+      star6 = data[6];
+    },
+  });
+  console.log(star6)
+  var ref = [star1, star3, star5];
+  var mes = [star2, star4, star6];
+  var dom = document.getElementById("container");
+  var myChart = echarts.init(dom);
+  var app = {};
+  option = null;
+  var posList = [
+    'left', 'right', 'top', 'bottom',
+    'inside',
+    'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+    'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+  ];
+
+  app.configParameters = {
+    rotate: {
+      min: -90,
+      max: 90
+    },
+    align: {
+      options: {
+        left: 'left',
+        center: 'center',
+        right: 'right'
+      }
+    },
+    verticalAlign: {
+      options: {
+        top: 'top',
+        middle: 'middle',
+        bottom: 'bottom'
+      }
+    },
+    position: {
+      options: echarts.util.reduce(posList, function (map, pos) {
+        map[pos] = pos;
+        return map;
+      }, {})
+    },
+    distance: {
+      min: 0,
+      max: 100
+    }
+  };
+
+  app.config = {
+    rotate: 90,
+    align: 'left',
+    verticalAlign: 'middle',
+    position: 'insideBottom',
+    distance: 15,
+    onChange: function () {
+      var labelOption = {
+        normal: {
+          rotate: app.config.rotate,
+          align: app.config.align,
+          verticalAlign: app.config.verticalAlign,
+          position: app.config.position,
+          distance: app.config.distance
+        }
+      };
+      myChart.setOption({
+        series: [{
+          label: labelOption
+        }, {
+          label: labelOption
+        }, {
+          label: labelOption
+        }, {
+          label: labelOption
+        }]
+      });
+    }
+  };
+
+
+  var labelOption = {
+    normal: {
+      show: true,
+      position: app.config.position,
+      distance: app.config.distance,
+      align: app.config.align,
+      verticalAlign: app.config.verticalAlign,
+      rotate: app.config.rotate,
+      //formatter: '{c}  {name|{a}}',
+      fontSize: 16,
+      rich: {
+        name: {
+          textBorderColor: '#fff'
+        }
+      }
+    }
+  };
+
+  option = {
+    color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    legend: {
+      data: ['参考值', '测量值']
+    },
+    toolbox: {
+      show: true,
+      orient: 'vertical',
+      left: 'right',
+      top: 'center',
+      feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+        restore: { show: true },
+        saveAsImage: { show: true }
+      }
+    },
+    calculable: true,
+    xAxis: [
+      {
+        type: 'category',
+        axisTick: { show: false },
+        data: ['葡萄糖6%','葡萄糖20%','氯化钠20%'],
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value',
+        name:'浓度(%)'
+      }
+    ],
+    series: [
+      {
+        name: '参考值',
+        type: 'bar',
+        barGap: 0,
+        label: labelOption,
+        data: ref,
+      },
+      {
+        name: '测量值',
+        type: 'bar',
+        label: labelOption,
+        data: mes,
+      },
+    ]
+  };;
+  myChart.setOption(option, true);
+</script>
+
+
+<script>
+    if (mes[0]>ref[0])
+    {
+      document.getElementById("hint1").innerText ="葡萄糖(6%)超出参考值";
+    }
+    else
+    {
+      document.getElementById("hint1").innerText ="葡萄糖(6%)低于参考值";
+    }
+
+    if (mes[1]>ref[1])
+    {
+      document.getElementById("hint2").innerText ="葡萄糖(20%)超出参考值";
+    }
+    else
+    {
+      document.getElementById("hint2").innerText ="葡萄糖(20%)低于参考值";
+    }
+
+    if (mes[2]>ref[2])
+    {
+      document.getElementById("hint0").innerText ="氯化钠(20%)超出参考值";
+    }
+    else
+    {
+      document.getElementById("hint0").innerText ="氯化钠(20%)低于参考值";
+    }
+</script>
+
+
+
+
+
+<script>
+  $(function () {
+    $(".btn").click(function () {
+      $(this).button('complete').delay(1000).queue(btn_click(1));
+      $(this).css('width', '200.8px');
+      $(this).css('height', '64px');
+    });
+  }); 
+</script>
+</body>
+
+</html>

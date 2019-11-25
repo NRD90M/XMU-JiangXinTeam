@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <title>登录</title>
+</head>
+
+<body>
+
+  <div class='container text-center' style="max-width: 400px;padding-top: 50px">
+    <i class="fa fa-sign-in mb-1 fa-4x" aria-hidden="true"></i>
+
+    <h1 class="h3 mb-4 font-weight-normal">登录系统</h1>
+    
+    <form action="/login" method="post">
+      
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">邮箱</span>
+        </div>
+        <input name="username" type="text" class="form-control {{un_state}}" value="{{un}}" placeholder="在此输入邮箱" required>
+        {% if un_state == "is-invalid" %}
+        <div class="invalid-feedback">用户名不存在</div>
+        {% endif %}
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-append">
+          <span class="input-group-text">密码</span>
+        </div>
+        <input name="password" type="password" class="form-control {{pw_state}}" placeholder="在此输入密码" required>
+        {% if pw_state == "is-invalid" %}
+        <div class="invalid-feedback">用户名或密码错误</div>
+        {% endif %}
+      </div>
+      <div class="col-auto my-2">
+        <div class="custom-control custom-checkbox mr-sm-2">
+          <input name='checkbox' type="checkbox" class="custom-control-input" id="keep_login">
+          <label class="custom-control-label" for="keep_login">接下来的7天保持登录状态</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block mb-2">登录</button>
+    </form>
+
+    <div class="btn-group btn-group d-flex">
+      <a class="btn btn-outline-danger" href="/">忘记密码</a>
+      <a class="btn btn-outline-success" href="/page/signup">注册</a>
+    </div>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+  </div>
+</body>
+
+
+</html>

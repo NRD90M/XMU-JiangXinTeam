@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+
+<style>
+    .dropbtn {
+        background-color: #d2d6de;
+        color: white;
+        padding-left: 6px;
+        padding-right: 6px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .dropdown-content a:hover {background-color: #f1f1f1}
+    
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    
+    .dropdown:hover .dropbtn {
+        background-color: #d2d6de;
+    }
+    </style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper" >
+  <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="content-header">
+      <ol class="breadcrumb" >
+          <img  src="../static/img/backk.png" style="width:20px; height:20px;z-index: -1;" onclick="window.location.href='/chart_menu'">
+          <div class="dropdown" style="z-index: 10;float: right; margin-right:calc(50% - 24px);vertical-align: middle" >
+            <button class="dropbtn">样例3</button>
+            <div class="dropdown-content" >
+                <a onclick="window.location.href='/case1'">样例1</a>
+                <a onclick="window.location.href='/case2'">样例2</a>
+                <a onclick="window.location.href='/case3'">样例3</a>
+                <a onclick="window.location.href='/case4'">CEA</a>
+            </div>
+          </div>
+      </ol>
+    </section> 
+  <!-- Main content -->
+  <section class="content" style="height: 800px; ">
+
+    <div id="container" style="height: 100%"></div>
+
+  
+
+
+    
+
+  </section>
+  <!--
+  <div>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_1')">Turn on</button>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+</div>
+-->
+</div>
+
+
+
+
+
+<script src="../static/js/app_camera.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../static/js/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../static/js/demo.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../static/js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../static/js/jquery.flot.resize.min.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../static/js/jquery.flot.pie.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../static/js/jquery.flot.categories.min.js"></script>
+
+<!-- Bootstrap 3.3.6 -->
+<!-- ChartJS 1.0.1 -->
+<script src="../static/js/Chart.min.js"></script>
+<!-- FastClick -->
+
+
+
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript"
+  src="https://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+
+<script>
+    $.ajax({
+        url: "/realtime_data_2?case=3",
+        async: false,
+        cache: false,
+        success: function (data) {
+            xName = data[0];
+            star1 = data[1];
+            star2 = data[2];
+            star3 = data[3];
+            star4 = data[4];
+            star5 = data[5];
+            star6 = data[6];
+            star7 = data[7];
+        },
+    });
+    console.log(xName)
+    console.log(star3)
+    console.log(star6)
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+
+    option = null;
+    option = {
+        toolbox: {
+            left: 'center',
+            itemSize: 16,
+            top: 35,
+            feature: {
+                dataZoom: {
+                    xAxisIndex: 'none'
+                },
+                restore: {},
+            }
+        },
+
+        xAxis: 
+            {
+                type: 'value', //数据
+                position :'top', //x 轴的位置【top bottom】
+                nameRotate :90, //坐标轴名字旋转，角度值。
+                axisLabel ://坐标轴刻度标签的相关设置。
+                {  
+                    rotate : 90 //刻度标签旋转的角度，
+                },
+                //scale: true, //是否是脱离 0 值比例
+                boundaryGap: false,
+               
+           },
+        yAxis: 
+            {
+                type: 'category',
+                data: xName,
+                inverse :'true', //是否是反向坐标轴。
+                    axisTick: 
+                    {
+                        inside: true
+                    },
+                    axisLabel: 
+                    {
+                        rotate : 270 //刻度标签旋转的角度，
+                        //inside: true,
+                    },
+            },
+        grid: 
+            {
+                top:100,
+                left: 20,
+                right: 50,
+                height: 620,
+            },
+        legend: 
+            {
+                position :'right',
+
+                data: [ '葡萄糖6%', '葡萄糖20%']
+            },
+        series: [
+
+            {
+                name: '葡萄糖6%',
+                data: star3,
+                type: 'line',
+                markLine : 
+                    {
+                        data : [{yAxis: String(star6),}],
+                    },
+
+                markArea: 
+                    {
+                        
+                        data: [[
+                                { yAxis: String(star6)}, 
+                                {yAxis: String(star7)}
+                              ]]
+                    }
+
+            },
+            {
+                name: '葡萄糖20%',
+                data: star4,
+                type: 'line',
+                markLine : 
+                    {
+                    data : [{yAxis: String(star7),}]
+                    }
+            },
+        ]
+    }
+    myChart.setOption(option, true)
+</script>
+</script>
+</body>
+
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+
+<style>
+    .dropbtn {
+        background-color: #d2d6de;
+        color: white;
+        padding-left: 6px;
+        padding-right: 6px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+    
+    }
+    
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .dropdown-content a:hover {background-color: #f1f1f1}
+    
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    
+    .dropdown:hover .dropbtn {
+        background-color: #d2d6de;
+    }
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="content-header">
+      <ol class="breadcrumb">
+          <img  src="../static/img/backk.png" style="width:20px; height:20px;z-index: -1;" onclick="window.location.href='/chart_menu'" >
+          <div class="dropdown" style="z-index: 10;float: right; margin-right:calc(50% - 24px);vertical-align: middle" >
+            <button class="dropbtn">CEA</button>
+            <div class="dropdown-content" >
+                <a onclick="window.location.href='/case1'">样例1</a>
+                <a onclick="window.location.href='/case2'">样例2</a>
+                <a onclick="window.location.href='/case3'">样例3</a>
+                <a onclick="window.location.href='/case4'">CEA</a>
+            </div>
+          </div>
+      </ol>
+    </section> 
+  <!-- Main content -->
+  <section class="content" style="height: 700px; ">
+    <div id="container" style="height: 70%"></div>
+    <div id="myButtons1" class="bs-example" style="text-align:center;">
+      <p id="hint">温馨提示：</p>
+      <p id="hint1"></p>
+      <p id="hint2"></p>
+      <p id="hint0"></p>
+    </div>
+  </section>
+</div>
+
+
+
+
+
+<script src="../static/js/app_camera.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../static/js/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../static/js/demo.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../static/js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../static/js/jquery.flot.resize.min.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../static/js/jquery.flot.pie.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../static/js/jquery.flot.categories.min.js"></script>
+
+<!-- Bootstrap 3.3.6 -->
+<!-- ChartJS 1.0.1 -->
+<script src="../static/js/Chart.min.js"></script>
+<!-- FastClick -->
+
+
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript"
+  src="https://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<script type="text/javascript">
+  $.ajax({
+    url: "/realtime_data_2?case=1",
+    async: false,
+    cache: false,
+    success: function (data) 
+      {
+        xName = data[0];
+        star1 = data[1];
+        star2 = data[2];
+        star3 = data[3];
+        star4 = data[4];
+        // star5 = data[5];
+        // star6 = data[6];
+      },
+  });
+  // console.log(star6)
+   var ref = [star1, star3];
+   var mes = [star2, 30,star4];
+  var dom = document.getElementById("container");
+  var myChart = echarts.init(dom);
+  var app = {};
+  option = null;
+  var posList = [
+    'left', 'right', 'top', 'bottom',
+    'inside',
+    'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+    'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+  ];
+
+  app.configParameters = {
+    rotate: {
+      min: -90,
+      max: 90
+    },
+    align: {
+      options: {
+        left: 'left',
+        center: 'center',
+        right: 'right'
+      }
+    },
+    verticalAlign: {
+      options: {
+        top: 'top',
+        middle: 'middle',
+        bottom: 'bottom'
+      }
+    },
+    position: {
+      options: echarts.util.reduce(posList, function (map, pos) {
+        map[pos] = pos;
+        return map;
+      }, {})
+    },
+    distance: {
+      min: 0,
+      max: 100
+    }
+  };
+
+  app.config = {
+    rotate: 90,
+    align: 'left',
+    verticalAlign: 'middle',
+    position: 'insideBottom',
+    distance: 15,
+    onChange: function () {
+      var labelOption = {
+        normal: {
+          rotate: app.config.rotate,
+          align: app.config.align,
+          verticalAlign: app.config.verticalAlign,
+          position: app.config.position,
+          distance: app.config.distance
+        }
+      };
+      myChart.setOption({
+        series: [{
+          label: labelOption
+        }, {
+          label: labelOption
+        }, {
+          label: labelOption
+        }, {
+          label: labelOption
+        }]
+      });
+    }
+  };
+
+
+  var labelOption = {
+    normal: {
+      show: true,
+      position: app.config.position,
+      distance: app.config.distance,
+      align: app.config.align,
+      verticalAlign: app.config.verticalAlign,
+      rotate: app.config.rotate,
+      //formatter: '{c}  {name|{a}}',
+      fontSize: 16,
+      rich: {
+        name: {
+          textBorderColor: '#fff'
+        }
+      }
+    }
+  };
+
+  option = {
+    //color: ['#003366', '#006699'],
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    legend: {
+      data: ['低浓度','高浓度','参考值']
+    },
+    toolbox: {
+      show: true,
+      orient: 'vertical',
+      left: 'right',
+      top: 'center',
+      feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+        restore: { show: true },
+      }
+    },
+    calculable: true,
+    xAxis: [
+      {
+        type: 'category',
+        axisTick: { show: false },
+        data: ['样本一','参考值','样本二'],
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value',
+        name:'ng/mL'
+      }
+    ],
+    series: [
+    //   {
+    //     name: 'ref',
+    //     type: 'bar',
+    //     barGap: 0,
+    //     label: labelOption,
+    //     barWidth : 30,
+    //     data: ref,
+    //     itemStyle: {
+    //                 normal:{  
+    //                 color: function (params){
+    //                     var colorList = ['#006699','#006699','#006699','#006699'];
+    //                     return colorList[params.dataIndex];
+    //                 }
+    //             },
+    //           },
+    //   },
+
+
+      {                                    //仅用来显示标签，无实际柱状图显示
+        name: '参考值',
+        type: 'bar',
+        label: labelOption,
+        barWidth : 0,
+        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#006699'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+              },
+      }, 
+      {                                   //仅用来显示标签，无实际柱状图显示
+        name: '低浓度',
+        type: 'bar',
+        label: labelOption,
+        barWidth : 0,
+        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#17701a'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+              },
+      },
+
+      {
+        name: 'mes',
+        type: 'bar',
+        label: labelOption,
+        barWidth : 30,
+        data: mes,
+        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#17701a','#006699','#9b2118'];   //绿 蓝 红
+                        if (mes[0]<=mes[1])
+                        {
+                          colorList[0]='#17701a';
+                        }
+                        else
+                        {
+                          colorList[0]='#9b2118';
+                        }
+                        if (mes[2]<=mes[1])
+                        {
+                          colorList[2]='#17701a';
+                        }
+                        else
+                        {
+                          colorList[2]='#9b2118';
+                        }                       
+                        return colorList[params.dataIndex];
+                    }
+                },
+              },
+      },
+      {                                   //仅用来显示标签，无实际柱状图显示
+        name: '高浓度',
+        type: 'bar',
+        label: labelOption,
+        barWidth : 0,
+        itemStyle: {
+                    normal:{  
+                    color: function (params){
+                        var colorList = ['#9b2118'];
+                        return colorList[params.dataIndex];
+                    }
+                },
+              },
+      },
+    ]
+  };
+  myChart.setOption(option, true);
+</script>
+
+<script>
+    if (mes[0]>mes[1])
+    {
+      document.getElementById("hint1").innerText ="样本一超出参考值,显阳性";
+    }
+    else
+    {
+      document.getElementById("hint1").innerText ="样本一低于参考值,显阴性";
+    }
+
+    if (mes[2]>mes[1])
+    {
+      document.getElementById("hint2").innerText ="样本二超出参考值,显阳性";
+    }
+    else
+    {
+      document.getElementById("hint2").innerText ="样本二低于参考值,显阴性";
+    }
+</script>
+
+
+
+
+
+
+</body>
+
+</html>

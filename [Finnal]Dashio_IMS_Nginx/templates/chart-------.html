@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html style="height: 50%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script src="../static/js/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+    <script type="text/javascript"
+        src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript"
+        src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+    <script src="../static/js/app.min.js"></script>
+    <script type="text/javascript">
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        $.ajax({
+            url: "/realtime_data",
+            async: false,
+            cache: false,
+            success: function (data) {
+                xName = data[0];
+                star1 = data[1];
+                star2 = data[2];
+                star3 = data[3];
+                star4 = data[4];
+                star5 = data[5];
+                min_and_max = data[6];
+                BSL.Vibrator();
+            },
+        });
+
+        option = {
+
+
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date
+            },
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '10%'],
+                min: min_and_max[0],
+                max: min_and_max[1],
+            },
+            dataZoom: [{
+                type: 'inside',
+                start: 0,
+                end: 100
+            }],
+            series: [
+                {
+                    name: '明参考',
+                    data: star1,
+                    type: 'line',
+                    smooth: true,
+                },
+                {
+                    name: '暗参考',
+                    data: star2,
+                    type: 'line',
+                    smooth: true,
+                },
+                {
+                    name: '葡萄糖6%',
+                    data: star3,
+                    type: 'line',
+                    smooth: true,
+                },
+                {
+                    name: '葡萄糖20%',
+                    data: star4,
+                    type: 'line',
+                    smooth: true,
+                },
+                {
+                    name: '氯化钠20%',
+                    data: star5,
+                    type: 'line',
+                    smooth: true,
+                },
+            ]
+        };
+        ;
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <ol class="breadcrumb" onclick="window.location.href='/chart_menu'">
+            <img  src="../static/img/backk.png" style="width:20px; height:20px;z-index: -1;; " >
+            <span style="text-align: center; font-size: 16px;line-height: 1.3333333;float: right; margin-right:calc(50% - 24px)">反射率图</span>
+        </ol>
+    </section> 
+    <section class="content" style="height: 700px; ">
+        <div id="container" style="height: 100%;width:100%;"></div>
+
+    </section>
+</div>
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+<script type="text/javascript"
+    src="https://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+<script type="text/javascript" src="https://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+<script src="../static/js/app.min.js"></script>
+
+
+<script>
+    $.ajax({
+        url: "/realtime_data_reflect",
+        async: false,
+        cache: false,
+        success: function (data) {
+            xName = data[0];
+            star1 = data[1];
+            star2 = data[2];
+            star3 = data[3];
+        },
+    });
+   
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+
+    option = null;
+    option = {
+        toolbox: {
+            left: 'center',
+            itemSize: 16,
+            top: 35,
+    
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        tooltip: {
+            triggerOn: 'none',
+            position: function (pt) {
+                
+                if(pt[0]>230){pt[0]=pt[0]-50;}
+                return [pt[0]-30, 130];
+           }
+        },
+        xAxis: {
+            axisPointer: {
+            value: '0',
+            snap: true,
+            lineStyle: {
+                color: '#004E52',
+                opacity: 0.5,
+                width: 2
+            },
+            handle: {
+                show: true,
+                color: '#004E52'
+            }
+        },
+        type: 'category',
+        boundaryGap: false,
+        data: xName
+           },
+        yAxis: {
+            type: 'value',
+            axisTick: {
+            inside: true
+            },
+            axisLabel: {
+            inside: true,
+            },
+            //z: 10
+        },
+        grid: {
+      
+        left: 3,
+        right: 0,
+        height: 530,
+        },
+        legend: {
+            data: ['癌胚抗原1','癌胚抗原2','空载片']
+        },
+        series: [
+            {
+                name: '癌胚抗原1',
+                data: star1,
+                type: 'line',
+            },
+            {
+                name: '癌胚抗原2',
+                data: star2,
+                type: 'line',
+             
+            },
+            {
+                name: '空载片',
+                data: star3,
+                type: 'line',
+            },
+        ]
+    }
+    myChart.setOption(option, true)
+</script>
+</body>
+
+</html>

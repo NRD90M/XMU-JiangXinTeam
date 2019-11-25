@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <!-- <section class="content-header">
+    <ol class="breadcrumb">
+      <li><a href="./board"><i class="fa fa-dashboard"></i> 主页</a></li>
+      <li><a href="./panel">检测</a></li>
+      <li class="active">控制面板</li>
+    </ol>
+  </section> -->
+  <!-- Main content -->
+  <style>
+    .hide{
+      display: none;
+    }
+  </style>
+  <section class="content" style="height: 700px;">
+    <img id="dev_on" src="../static/img/dev_on.png" class="hide" style="width:30px; height:30px;margin-left: 80%; position: absolute ;">
+    <img id="dev_off" src="../static/img/dev_off.png" class="" style="width:30px; height:30px;margin-left: 80%; position: absolute;">
+    <div style="text-align: center">
+      <h3 id="head_str" style="text-align:center;display:block">
+        <font color="#3c8dbc">下一步</font>
+      </h3>
+      <h3 id="head_str2" style="text-align:center">
+        <font></font>
+      </h3>
+    </div>
+    <div id="container" style="height: 50%;display:none"></div>
+
+
+    <div style="text-align: center;display:block">
+      <img id=image1 src="../static/img/scan_crop_small.gif" style="width:300px;height: 300px;margin-top: 15px">
+    </div>
+
+    <div id="wash1" class="bs-example" style="text-align:center;margin-top: 20px;display: none;">
+      <button type="button" class="btn btn-primary btn-lg"
+      style="border-color: #3c8dbc;border-radius:12px;width: 200.8px; height: 64px;"onclick="wash_click('wash_1')">初始化</button>
+    </div>
+<!--
+  style="border-color: #3c8dbc;border-radius:12px;width: 200.8px; height: 64px;"onclick="wash_click('wash_1')">清洗</button>
+-->
+    <div id="white_black" class="bs-example" style="text-align:center;margin-top: 20px;display: none;">
+      <button type="button" class="btn btn-primary btn-lg "  
+      style="border-color: #3c8dbc;border-radius:12px;width: 200.8px; height: 64px;"onclick="white_click('white_1')">检测明暗参考</button>
+    </div>
+
+
+    <div id="myButtons1" class="bs-example" style="text-align:center;margin-top: 20px">
+      <button id=button1 class="btn btn-primary btn-lg"
+        style="border-color: #3c8dbc;border-radius:12px;width: 200.8px; height: 64px;">开始扫描</button>
+    </div>
+    <!--
+    <div>
+      <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+  </div>
+  -->
+  </section>
+  <!--
+  <div>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_1')">Turn on</button>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+</div>
+-->
+</div>
+
+
+
+
+
+<script src="../static/js/app_camera.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="../static/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="../static/js/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../static/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../static/js/demo.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../static/js/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../static/js/jquery.flot.resize.min.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../static/js/jquery.flot.pie.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../static/js/jquery.flot.categories.min.js"></script>
+
+<!-- Bootstrap 3.3.6 -->
+<!-- ChartJS 1.0.1 -->
+<script src="../static/js/Chart.min.js"></script>
+<!-- FastClick -->
+
+
+
+<script>
+  function btn_click_Motor(state) {
+    $.get("/panel_input_motor/" + state, function (res) { console.log(res); });
+  }
+</script>
+
+<script>
+  var step = 0;
+  $(document).ready(function () {
+    $("#myButtons1").click(function () {
+      if (step == 0) {
+        BSL.Qcode('0', 'code')
+        code(result);
+        //code('1');
+      }
+      else if (step == 4) {
+        // $("#image1").attr("src", '../static/img/photo1.jpg');
+        //$("#container").css({ "display": "block" });
+        //$("#image1").css({ "display": "none" });
+        //document.getElementById("button1").innerHTML = "重新检测";
+        //step++;
+     
+        var Dev_ID = sessionStorage.getItem('Dev_ID');    //获取芯片的ID号，决定跳转到哪一个case
+        // window.location.href = "/case"+Dev_ID;
+        window.location.href = "/case4";
+      }
+      else if (step == 5) {
+        $("#head_str").html("请扫描芯片二维码");
+        $("#head_str2").css({ "display": "none"});
+        $("#image1").attr("src", "../static/img/scan_crop_small.gif");
+        document.getElementById("button1").innerHTML = "开始扫描";
+        step = 0;
+      }
+      else if (step == 3) {
+        $("#head_str2").html("检测完成，取出芯片");
+        $("#head_str2").css({ "font-weight": "600", "font-size": "3" });
+        $("#image1").attr("src", "../static/img/get_plt_small.gif");
+        document.getElementById("button1").innerHTML = "查看检测报告";
+        step++;
+      }
+      else if (step == 1) {
+        //btn_click_Motor('M_1');
+        $("#wash1").css({"display": "none" });
+        $("#container").css({ "display": "none" });
+        $("#white_black").css({ "display": "block" });
+        $("#head_str2").css({ "display": "block" });
+        $("#head_str2").html("将检测芯片放入托盘内");
+        $("#head_str2").css({ "font-weight": "600", "font-size": "3" });
+        $("#image1").attr("src", "../static/img/put_small.gif");
+        document.getElementById("button1").innerHTML = "下一步";
+        step++;
+      }
+      // else if (step == 2) {
+      //   $("#head_str2").html("芯片正在标定");
+      //   $("#white_black").css({ "display": "none" });
+      //   $("#head_str2").css({ "font-weight": "600", "font-size": "3" });
+      //   $("#image1").attr("src", "../static/img/flowchart_crop_small_small.gif");
+      //   document.getElementById("button1").innerHTML = "下一步";
+      //   step++;
+      // }
+      // else if (step == 3) {
+      //   var str3 = "取出芯片，加入血样，将采集了血样的检测芯片放入托盘"
+      //   $("#head_str2").html(str3);
+      //   $("#head_str2").css({ "font-weight": "600", "font-size": "3" });
+      //   $("#image1").attr("src", "../static/img/offcenter_plt_small_small.gif");
+      //   document.getElementById("button1").innerHTML = "下一步";
+      //   step++;
+      // }
+      else if (step == 2) {
+        btn_click_Motor('M_1');
+        $("#white_black").css({"display": "none" });
+        $("#head_str2").html("正在检测,请等待...");
+        $("#head_str2").css({ "font-weight": "600", "font-size": "3" });
+        $("#image1").attr("src", "../static/img/flowchart_crop_small_small.gif");
+        
+        $("#myButtons1").css({ "display": "none" });
+        a.val("下一步");
+        
+        wait_data();     
+        step += 1;
+        
+      }
+    })
+  })
+/*******************************************Add***************************************************/
+/*******************************************Add***************************************************/
+  var new_data_arrived_flag=0;
+  var p_scan;
+  var a = $("#button1");
+  var DEVICE_offline_Threshold_num=4;
+  var DEVICE_online_flag =0;
+  var Done_on_flag=1,Done_off_flag=0;
+
+
+
+
+  $.ajax({                                                  //执行一次标志位清除
+            url: "/CLEAR_FLAG?Moto_f=1&Wash_f=1&White_f=1&new_data_arrived_flag_f=1&DEVICE_online_flag_f=1",
+            async: false,
+            cache: false,
+            success: function (data) {
+              console.log(data)
+            },
+          });
+
+
+  function poll_scan()
+  {
+    $.ajax({
+          url: "/SCAN_NEW_DATA",
+          async: false,
+          cache: false,
+          success: function (data) {
+            new_data_arrived_flag= data[0];
+          },
+        });
+    if (new_data_arrived_flag==1)       //通知后端前端已获得新数据标志位
+    {
+      $("#myButtons1").css({ "display": "block" });
+      a.val("下一步");
+      a.removeAttr("disabled")
+      clearInterval(p_scan);
+      BSL.Vibrator();
+    }
+  }
+  function wait_data()
+  { 
+    p_scan=setInterval("poll_scan()",1300);     //开始轮询
+  }
+
+
+  function poll_scan_device_IsOnline()
+  {
+    console.log(step)
+      $.ajax({
+            url: "/SCAN_ONLINE",
+            async: false,
+            cache: false,
+            success: function (data) {
+                DEVICE_online_flag= data[0];
+               // console.log(DEVICE_online_flag)
+            },
+            error:function(e){  
+              DEVICE_online_flag=0
+             }  
+          });
+
+     //console.log(DEVICE_online_flag)
+     
+     if (DEVICE_online_flag==0 && DEVICE_offline_Threshold_num<20)
+     {
+      DEVICE_offline_Threshold_num+=1;
+     }
+     if (DEVICE_online_flag==1)
+     {
+      DEVICE_offline_Threshold_num=0;
+     }    
+     
+     if (DEVICE_offline_Threshold_num>3)
+     {
+      Done_off_flag=0;
+      if(Done_on_flag==0 && step!=3)
+       {
+          $("#dev_off").removeClass("hide");
+          $("#dev_on").addClass("hide");
+         // BSL.Vibrator();
+          Done_on_flag=1;
+       }
+     }
+     else 
+     {
+      Done_on_flag=0;
+      if(Done_off_flag==0)
+       {
+          $("#dev_on").removeClass("hide");
+          $("#dev_off").addClass("hide");
+         // BSL.Vibrator();
+          Done_off_flag=1;
+        
+       }
+     }
+  }
+
+
+  poll_scan_device_IsOnline();
+  self.setInterval("poll_scan_device_IsOnline()",1500);     //开始轮询
+/*******************************************Add***************************************************/
+/*******************************************Add***************************************************/
+</script>
+
+<script>
+  /*var time = 35;
+  var timeSet;
+  function test01F() {
+    time = time - 1;
+    console.log("newTime:" + time);
+    var a = $("#button1");
+    a.attr("disabled", "disabled");
+    if (time == 0) {
+      time = 25;
+      $("#myButtons1").css({ "display": "block" });
+      //$("#myButtons1").css({"text-align":"center"});
+      a.val("下一步");
+      a.removeAttr("disabled")
+      //移除计时器
+      //clearTimeout(timeSet);
+    } else {
+      $("#myButtons1").css({ "display": "none" });
+      //a.val(time);
+      timeSet = setTimeout(function () {
+        test01F()
+      }, 1000)
+    }
+  }*/
+</script>
+
+
+<script>
+  function code(result) {
+    var val = result;
+    var cookie = document.cookie;
+    cookie = result;
+    
+    sessionStorage.setItem('Dev_ID', result);
+    // BSL.Vibrator();
+    // BSL.msgRing();
+    var Dev_ID = "芯片号:" + cookie;
+    $("#wash1").css({"display": "block" });
+    $("#head_str").html(Dev_ID);
+    $("#head_str").css({ "color": "#3c8dbc", "font-size": "2", "display": "block" });
+    $("#image1").attr("src", "../static/img/scan_crop_small.gif");
+    step++;
+    document.getElementById("button1").innerHTML = "下一步";
+  }
+</script>
+
+<script>
+  function btn_click(state) {
+    $.get("/panel_input/" + state, function (res) { console.log(res); });
+  }
+</script>
+
+<script>
+  function wash_click(state) {
+    $.get("/panel_input_wash/" + state, function (res) { console.log(res); });
+  }
+</script>
+
+<script>
+  function white_click(state) {
+    $.get("/panel_input_white/" + state, function (res) { console.log(res); });
+  }
+</script>
+
+<script>
+  $(function () {
+    $(".btn").click(function () {
+      $(this).button('complete').delay(10).queue(btn_click(1));
+      $(this).css('width', '200.8px');
+      $(this).css('height', '64px');
+    });
+  }); 
+</script>
+
+<script>
+ 
+</script>
+</body>
+
+</html>

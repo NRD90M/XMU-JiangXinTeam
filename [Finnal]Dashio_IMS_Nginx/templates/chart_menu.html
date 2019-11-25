@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+{% include '_header.html' %}
+
+
+
+<style>
+    .menu 
+    {
+        height: 96%;
+        width: 49%;
+        float: left;
+        background-color: #d3dadd00;
+        border-radius:5px;
+        margin-bottom: 2%;
+        margin-top: 0;
+
+    }
+    .menu :active
+    {
+        background-color: #868a8b;
+    }
+
+</style>
+<script>
+    Dev_ID = sessionStorage.getItem('Dev_ID')
+    if (Dev_ID==null)
+        {
+            Dev_ID = '1'
+        }
+</script>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <!-- <section class="content-header">
+        <ol class="breadcrumb">
+            <li><a href="./board"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li><a href="./panel">检测</a></li>
+            <li class="active">检测结果</li>
+        </ol>
+    </section> -->
+    <!-- Main content -->
+    <section class="content" style="height: 700px; ">
+
+    
+        <div id="myButtons1" class="bs-example" style="text-align:center;height:25%;">
+            <div class="menu" style="margin-right: 2%" onclick="window.location.href='/case'+'4'">
+            <img src="../static/img/data3.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+            <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center;">对照图</h1>
+            </div>
+            <div class="menu" onclick="window.location.href='/reflect'">
+                <img src="../static/img/data.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+                <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center">反射率图</h1>
+            </div>
+        </div>
+        <div id="myButtons1" class="bs-example" style="text-align:center;height:25%;">
+            <div class="menu"  style="margin-right: 2%" onclick="window.location.href='/chart'">
+                <img src="../static/img/data1.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+                <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center">幅值图</h1>
+            </div>     
+            <div class="menu" onclick="window.location.href='/panel'">
+                <img src="../static/img/test.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+                <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center">重新检测</h1>
+            </div>   
+        </div>
+        <div id="myButtons1" class="bs-example" style="text-align:center;;height:25%;">
+            <div class="menu"  style="margin-right: 2%" onclick="window.location.href='/AI_predict'">
+                <img src="../static/img/ai.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+                <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center">AI检测</h1>
+            </div>
+            <div class="menu" onclick="window.location.href='/chat'">
+                <img src="../static/img/doc.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+                <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center">联系医生</h1>
+            </div> 
+        </div>
+        <div id="myButtons1" class="bs-example" style="text-align:center;;height:25%;">
+            <div class="menu"  style="margin-right: 2%" onclick="window.location.href='/reflect'">
+                <img src="../static/img/test1.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+                <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center">检测报告</h1>
+            </div>
+            <div class="menu" onclick="window.location.href='/panel'">
+                <img src="../static/img/bar.png" style="width:100px; height:100px;float: left;margin-left:calc(50% - 50px);margin-top:calc(50% - 50px);" >
+                <h1 style="margin-top: calc(50% + 50px); font-size: 18px;line-height: 1.3333333;text-align:center">历史检测</h1>
+            </div>    
+        </div>
+        <!--
+    <div>
+      <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+  </div>
+  -->
+    </section>
+    <!--
+  <div>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_1')">Turn on</button>
+    <button type="button" class="btn btn-primary" onclick="btn_click_Motor('M_0')">Turn off</button>
+</div>
+-->
+</div>
+<script src="../static/js/jquery-2.2.3.min.js"></script>
+<script src="../static/js/app.min.js"></script>
+<script src="../static/js/demo.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/fastclick.js"></script>
+
+
+</body>
+
+</html>
